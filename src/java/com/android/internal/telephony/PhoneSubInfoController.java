@@ -81,6 +81,12 @@ public class PhoneSubInfoController extends IPhoneSubInfo.Stub {
     public String getDeviceId(String callingPackage) {
         return getDeviceIdForPhone(SubscriptionManager.getPhoneId(getDefaultSubscription()),
                 callingPackage);
+=======
+    // The device id should be constant for non-msim applications
+    // so always return device id from first phone.
+    public String getDeviceId(String callingPackage) {
+        return getDeviceIdForPhone(PHONE_ID_1);
+>>>>>>> LA.BF64.1.2.2-04040-8x94.0
     }
 
     public String getDeviceIdForPhone(int phoneId, String callingPackage) {
@@ -119,8 +125,11 @@ public class PhoneSubInfoController extends IPhoneSubInfo.Stub {
         }
     }
 
+    // The device svn should be constant for non-msim applications
+    // so always return device svn from first phone.
     public String getDeviceSvn(String callingPackage) {
-        return getDeviceSvnUsingSubId(getDefaultSubscription(), callingPackage);
+        int[] subId = SubscriptionController.getInstance().getSubId(PHONE_ID_1);
+        return getDeviceSvnUsingSubId(subId[0], callingPackage);
     }
 
     public String getDeviceSvnUsingSubId(int subId, String callingPackage) {
